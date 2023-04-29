@@ -131,4 +131,36 @@ const deleteDevice = async (req, res, next) => {
   }
 };
 
-export { createDevice, getAllDeviceData, updateDevice, deleteDevice };
+const getAllSingleDeviceData = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    //read data from file
+    const data = await ReadData();
+
+    if (!data) {
+      res.status(404).send("Device data file is not found");
+      throw new Error("Device data file is not found");
+    }
+
+    // Find the index of the element with matching id
+    const index = data.findIndex((item) => item.deviceId === id);
+
+    if (index === -1) {
+      res.status(404).send(`Device with id ${id} not found`);
+      throw new Error(`Device with id ${id} not found`);
+    }
+
+    res.status(200).json({ devices: data[index] });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export {
+  createDevice,
+  getAllDeviceData,
+  updateDevice,
+  deleteDevice,
+  getAllSingleDeviceData,
+};
