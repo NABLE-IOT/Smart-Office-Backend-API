@@ -92,7 +92,7 @@ const updateDevice = async (req, res, next) => {
 
     // Save updated data back to file
     WriteData(data);
-    res.status(200).json(data);
+    res.status(200).json({ device: data[index] });
   } catch (error) {
     next(error);
   }
